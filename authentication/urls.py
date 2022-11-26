@@ -1,18 +1,15 @@
 from django.urls import path, include
-from rest_framework import routers
 from rest_framework_simplejwt import views as jwt_views
 
 from . import views
 
 
-router = routers.SimpleRouter()
-
-router.register('signup', views.UserViewset, basename='signup')
-
 urlpatterns = [
     # Include login/ & logout/ paths
     path('', include('rest_framework.urls')),
-    path('', include(router.urls)),
+    path('signup/', views.UserViewset.as_view({
+        'post': 'create'
+    }), name='signup'),
     path(
         'api/token/',
         jwt_views.TokenObtainPairView.as_view(),
