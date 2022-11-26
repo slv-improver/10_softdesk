@@ -17,8 +17,4 @@ class UserSerializer(serializers.ModelSerializer):
         return make_password(value)
 
     # def create(self, validated_data):
-    #     user = super(UserSerializer, self).create(validated_data)
-    #     if 'password' in validated_data:
-    #           user.set_password(validated_data['password'])
-    #           user.save()
-    #     return user
+    #     return get_user_model().objects.create_user(validated_data)
