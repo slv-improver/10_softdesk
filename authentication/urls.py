@@ -5,13 +5,11 @@ from . import views
 
 
 urlpatterns = [
-    # Include login/ & logout/ paths
-    path('', include('rest_framework.urls')),
     path('signup/', views.UserViewset.as_view({
         'post': 'create'
     }), name='signup'),
     path(
-        'api/token/',
+        'login/',
         jwt_views.TokenObtainPairView.as_view(),
         name='token_obtain_pair',
     ),
@@ -20,4 +18,6 @@ urlpatterns = [
         jwt_views.TokenRefreshView.as_view(),
         name='token_refresh',
     ),
+    # Include logout/ paths
+    path('', include('rest_framework.urls')),
 ]
