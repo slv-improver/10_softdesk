@@ -5,16 +5,26 @@ from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
 
+    password_confirmation = serializers.CharField(
+        style={"input_type": "password"},
+        write_only=True,
+    )
+
     class Meta:
         model = get_user_model()
         fields = (
             'id',
             'username',
             'password',
+            'password_confirmation',
         )
 
-    def validate_password(self, value):
-        return make_password(value)
-
-    # def create(self, validated_data):
-    #     return get_user_model().objects.create_user(validated_data)
+    def validate(self, data):
+        if data['password'] != data['password_confirmation']:
+            raise serializers.ValidationError(
+                'The password confirmation does not match password.'
+            )
+        return {
+            'username': data['username'],
+            'password': make_password(data['password']),
+        }
