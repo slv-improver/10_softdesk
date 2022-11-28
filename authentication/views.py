@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from .serializers import UserSerializer
 
@@ -6,6 +5,3 @@ from .serializers import UserSerializer
 class UserViewset(viewsets.ModelViewSet):
 
     serializer_class = UserSerializer
-
-    def get_queryset(self):
-        return get_user_model().objects.all().order_by('-date_joined')
