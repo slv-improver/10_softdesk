@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework.response import  Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -11,6 +12,16 @@ class ProjectAPIView(APIView):
     permission_classes = [
         IsAuthenticated,
     ]
+
+    def get(self, request):
+        User = get_user_model()
+        projects = models.Project.objects.filter(
+            contributor__in=models.Contributor.objects.filter(
+                user=request.user
+            )
+        )
+        serializer = serializers.ProjectSerializer(projects, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = serializers.ProjectSerializer(data=request.data)
