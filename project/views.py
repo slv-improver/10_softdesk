@@ -15,6 +15,12 @@ class ProjectAPIView(APIView):
     def post(self, request):
         serializer = serializers.ProjectSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            project = serializer.save()
+            models.Contributor.objects.create(
+                user=request.user,
+                project=project,
+                permission='UD',
+                role='AU'
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
