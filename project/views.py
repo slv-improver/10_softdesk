@@ -7,7 +7,7 @@ from rest_framework import status
 from . import serializers, models
 
 
-class ProjectAPIView(APIView):
+class ProjectList(APIView):
 
     permission_classes = [
         IsAuthenticated,
@@ -20,11 +20,11 @@ class ProjectAPIView(APIView):
                 user=request.user
             )
         )
-        serializer = serializers.ProjectSerializer(projects, many=True)
+        serializer = serializers.ProjectListSerializer(projects, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = serializers.ProjectSerializer(data=request.data)
+        serializer = serializers.ProjectListSerializer(data=request.data)
         if serializer.is_valid():
             project = serializer.save()
             models.Contributor.objects.create(
