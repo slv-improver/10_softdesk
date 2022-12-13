@@ -8,3 +8,10 @@ class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = ('id', 'title', 'description', 'type')
+
+
+class ProjectDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Project
+        fields = ('id', 'title', 'description', 'type')
