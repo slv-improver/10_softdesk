@@ -52,3 +52,17 @@ class ProjectDetail(APIView):
         )
         serializer = serializers.ProjectDetailSerializer(project)
         return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        project = get_object_or_404(
+            models.Project,
+            id=self.kwargs['project_id']
+        )
+        serializer = serializers.ProjectDetailSerializer(
+            project,
+            data=request.data
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
