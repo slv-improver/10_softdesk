@@ -66,3 +66,12 @@ class ProjectDetail(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        project = get_object_or_404(
+            models.Project,
+            id=self.kwargs['project_id']
+        )
+        project.delete()
+        data = {'delete': 'ok'}
+        return Response(data, status=status.HTTP_202_ACCEPTED)
